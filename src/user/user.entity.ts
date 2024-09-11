@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Store } from 'src/store/store.entity';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
 
 @Entity()
 export class User {
@@ -11,7 +12,7 @@ export class User {
   @Column()
   password: string;
 
-  @Column()
+  @Column({ unique: true })
   email: string;
 
   @Column()
@@ -22,4 +23,8 @@ export class User {
 
   @Column({ type: 'timestamp', nullable: true })
   updated_at: Date | null;
+
+  @ManyToOne(() => Store, { nullable: true })
+  @JoinColumn({ name: 'store_id' })
+  store: Store;
 }

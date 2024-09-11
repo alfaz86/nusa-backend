@@ -34,4 +34,17 @@ export class UserService {
   async remove(id: number): Promise<void> {
     await this.userRepository.delete(id);
   }
+
+  /**
+   * checking user's store existence
+   * @param id
+   * @return boolean
+   */
+  async checkStore(id: number): Promise<boolean> {
+    const user = await this.userRepository.findOne({
+      where: { id },
+      relations: ['store'],
+    });
+    return user && user.store ? true : false;
+  }
 }

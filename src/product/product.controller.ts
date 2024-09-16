@@ -1,7 +1,12 @@
-import { Controller, Get } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post, UploadedFile, UseInterceptors } from '@nestjs/common';
+import { FileInterceptor } from '@nestjs/platform-express';
+import { CreateProductDto } from './product.dto';
+import { ProductService } from './product.service';
 
 @Controller('products')
 export class ProductController {
+  constructor(private readonly productService: ProductService) {}
+  
   @Get()
   getAllProducts() {
     return [
@@ -42,5 +47,19 @@ export class ProductController {
         path: '/uploads/products/Fantech ATOM MIZU SERIES Keyboard Mechanical Gaming ATOM 63 81 96 Hotswappable 3 Pin.jpeg',
       },
     ];
+  }
+
+  @Get('store/:storeId')
+  async getProductsByStore(@Param('storeId') storeId: number) {
+    return this.productService.findByStoreId(storeId);
+  }
+
+  @Post()
+  @UseInterceptors(FileInterceptor('image'))
+  async createProduct(
+    @Body() createProductDto: CreateProductDto,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    return this.productService.createProduct(createProductDto, file);
   }
 }

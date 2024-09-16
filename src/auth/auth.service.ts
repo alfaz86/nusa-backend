@@ -11,20 +11,17 @@ export class AuthService {
   async validateUser(
     email: string,
     password: string,
-  ): Promise<{
-    token: string;
-    role: string;
-  } | null> {
+  ): Promise<string | null> {
     const user = await this.userService.findByEmail(email);
 
     if (email === user.email && password === user.password) {
       const role = user.role;
       const token = jwt.sign(
-        { id: user.id, username: user.username, email, role: user.role },
+        { id: user.id, username: user.username, email, role, store_id: user?.store?.id },
         this.JWT_SECRET,
         { expiresIn: '1h' },
       );
-      return { token, role };
+      return token;
     }
     return null;
   }

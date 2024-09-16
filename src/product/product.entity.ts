@@ -12,11 +12,11 @@ export class Product {
   @Column('decimal', { precision: 10, scale: 2 })
   price: number;
 
-  @Column({ nullable: true })
+  @Column('text', { nullable: true })
   description: string;
 
   @Column({ type: 'int' })
-  stock_quantity: number;
+  stock: number;
 
   @Column()
   image: string;

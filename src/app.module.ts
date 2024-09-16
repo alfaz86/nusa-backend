@@ -7,8 +7,10 @@ import { ProfileController } from './profile/profile.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { UserModule } from './user/user.module';
-import { ProductController } from './product/product.controller';
 import { StoreModule } from './store/store.module';
+import { ConfigModule } from '@nestjs/config';
+import { ProductModule } from './product/product.module';
+import { S3Module } from './s3/s3.module';
 
 @Module({
   imports: [
@@ -25,11 +27,14 @@ import { StoreModule } from './store/store.module';
       entities: [__dirname + '/**/*.entity{.ts,.js}'],
       synchronize: true,
     }),
+    ConfigModule.forRoot(),
     AuthModule,
     UserModule,
     StoreModule,
+    ProductModule,
+    S3Module,
   ],
-  controllers: [AppController, ProductController, ProfileController],
+  controllers: [AppController, ProfileController],
   providers: [AppService],
 })
 export class AppModule {}

@@ -19,7 +19,10 @@ export class UserService {
   }
 
   findByEmail(email: string): Promise<User | null> {
-    return this.userRepository.findOneBy({ email });
+    return this.userRepository.findOne({
+      where: { email },
+      relations: ['store'],
+    });
   }
 
   async create(user: User): Promise<User> {
